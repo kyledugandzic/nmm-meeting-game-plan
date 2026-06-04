@@ -1,0 +1,1340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>New Metric Media — Meeting Game Plan</title>
+<style>
+  :root {
+    --green: #004c3f;
+    --green-light: #e6f5f0;
+    --green-mid: #d0e8e0;
+    --dark: #1a1a2e;
+    --gray: #f6f6f7;
+    --white: #ffffff;
+    --text: #202223;
+    --text-light: #6d7175;
+    --border: #e1e3e5;
+    --red: #dc2626;
+    --red-light: #fef2f2;
+    --red-border: #fecaca;
+    --amber: #b45309;
+    --amber-light: #fffbeb;
+    --amber-border: #fde68a;
+    --shadow: 0 2px 8px rgba(0,0,0,0.08);
+    --radius: 12px;
+    --font: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: var(--font); background: var(--gray); color: var(--text); line-height: 1.6; }
+  a { color: var(--green); text-decoration: underline; }
+  a:hover { opacity: 0.85; }
+  .container { max-width: 820px; margin: 0 auto; padding: 20px; }
+
+  /* Header */
+  header {
+    background: var(--dark);
+    color: var(--white);
+    text-align: center;
+    padding: 60px 20px 48px;
+    border-radius: 0 0 24px 24px;
+  }
+  header .badge {
+    display: inline-block;
+    font-size: 0.75rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    background: rgba(255,255,255,0.1);
+    padding: 6px 18px;
+    border-radius: 20px;
+    margin-bottom: 20px;
+    font-weight: 600;
+  }
+  header h1 { font-size: 2.8rem; font-weight: 800; margin-bottom: 8px; }
+  header .subtitle { font-size: 1.05rem; color: rgba(255,255,255,0.7); margin-bottom: 4px; }
+  header .prepared { font-size: 1rem; color: rgba(255,255,255,0.6); }
+  header .prepared strong { color: var(--white); }
+
+  /* Toolbar */
+  .toolbar { display: flex; justify-content: flex-end; gap: 12px; margin: 20px 0 10px; }
+  .toolbar button {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 16px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    font-family: var(--font);
+    color: var(--text);
+    transition: background 0.2s;
+  }
+  .toolbar button:hover { background: var(--gray); }
+
+  /* Info banner */
+  .info-banner {
+    background: var(--green-light);
+    border-left: 4px solid var(--green);
+    padding: 14px 18px;
+    border-radius: 8px;
+    font-size: 0.92rem;
+    margin-bottom: 24px;
+  }
+  .info-banner.amber {
+    background: var(--amber-light);
+    border-left-color: var(--amber);
+  }
+
+  /* Cards */
+  .card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 28px;
+    margin-bottom: 20px;
+    box-shadow: var(--shadow);
+  }
+  .card h2 { font-size: 1.15rem; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+  .card h2 .icon { font-size: 1.3rem; }
+  .card h3 { font-size: 1rem; margin: 16px 0 8px; color: var(--green); }
+  .card p { font-size: 0.95rem; color: #444; line-height: 1.6; margin-bottom: 8px; }
+  .card p:last-child { margin-bottom: 0; }
+
+  /* Stats row */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 12px;
+    margin: 16px 0;
+  }
+  .stat-box {
+    background: var(--gray);
+    border-radius: 10px;
+    padding: 16px;
+    text-align: center;
+  }
+  .stat-box .number { font-size: 1.5rem; font-weight: 800; color: var(--green); }
+  .stat-box .number.red { color: var(--red); }
+  .stat-box .number.amber { color: var(--amber); }
+  .stat-box .stat-label { font-size: 0.78rem; color: var(--text-light); margin-top: 4px; }
+
+  /* Meeting details grid */
+  .meeting-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 14px;
+  }
+  .meeting-item {
+    background: var(--gray);
+    border-radius: 10px;
+    padding: 18px;
+    text-align: center;
+  }
+  .meeting-item .label {
+    font-size: 0.72rem;
+    color: var(--text-light);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+  }
+  .meeting-item .value { font-size: 0.95rem; font-weight: 700; color: var(--text); }
+
+  /* People grid */
+  .people-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 16px 0; }
+  .person-card {
+    background: var(--gray);
+    border-radius: 10px;
+    padding: 18px;
+    border-left: 4px solid var(--border);
+  }
+  .person-card.shopify { border-left-color: var(--green); }
+  .person-card.merchant { border-left-color: var(--amber); }
+  .person-card .name { font-size: 1rem; font-weight: 700; margin-bottom: 2px; }
+  .person-card .title { font-size: 0.82rem; color: var(--text-light); margin-bottom: 8px; }
+  .person-card .detail { font-size: 0.85rem; color: #444; line-height: 1.55; }
+  .person-tag {
+    display: inline-block;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 12px;
+    margin-bottom: 8px;
+  }
+  .person-tag.green { background: var(--green-light); color: var(--green); }
+  .person-tag.amber { background: var(--amber-light); color: var(--amber); }
+
+  /* Brand chips */
+  .brand-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 16px 0; }
+  .brand-chip {
+    background: var(--gray);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px;
+    text-align: center;
+  }
+  .brand-chip .brand-name { font-size: 0.9rem; font-weight: 700; margin-bottom: 2px; }
+  .brand-chip .brand-type { font-size: 0.78rem; color: var(--text-light); }
+
+  /* Accordion */
+  .accordion { margin-bottom: 16px; }
+  .accordion-header {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 18px 24px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 600;
+    font-size: 1.05rem;
+    box-shadow: var(--shadow);
+    transition: background 0.2s;
+    user-select: none;
+  }
+  .accordion-header:hover { background: var(--gray); }
+  .accordion-header .check { color: var(--green); margin-right: 8px; font-weight: 700; }
+  .accordion-header .toggle { font-size: 1.2rem; color: var(--text-light); transition: transform 0.3s; }
+  .accordion-header.active .toggle { transform: rotate(180deg); }
+  .accordion-header.active { border-radius: var(--radius) var(--radius) 0 0; }
+  .accordion-body {
+    display: none;
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-top: none;
+    border-radius: 0 0 var(--radius) var(--radius);
+    padding: 24px;
+    box-shadow: var(--shadow);
+  }
+  .accordion-body.show { display: block; }
+  .accordion-body ul { padding-left: 20px; margin: 10px 0; }
+  .accordion-body ul li { margin-bottom: 8px; font-size: 0.95rem; line-height: 1.5; }
+  .accordion-body h3 { font-size: 1rem; margin: 16px 0 8px; color: var(--green); }
+  .accordion-body p { font-size: 0.95rem; color: #444; line-height: 1.6; margin-bottom: 10px; }
+
+  /* Sub-sections */
+  .sub-section {
+    background: var(--gray);
+    border-radius: 10px;
+    padding: 18px;
+    margin: 12px 0;
+  }
+  .sub-section h4 { font-size: 0.95rem; margin-bottom: 8px; color: var(--text); }
+  .sub-section p { font-size: 0.9rem; }
+
+  /* Highlight boxes */
+  .highlight {
+    background: var(--green-light);
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin: 10px 0;
+    font-size: 0.92rem;
+  }
+  .highlight.red {
+    background: var(--red-light);
+    border: 1px solid var(--red-border);
+  }
+  .highlight.amber {
+    background: var(--amber-light);
+    border: 1px solid var(--amber-border);
+  }
+  .highlight .emoji { font-size: 1.3rem; margin-right: 8px; }
+
+  /* Warning box */
+  .warning-box {
+    background: var(--red-light);
+    border: 1px solid var(--red-border);
+    border-radius: 10px;
+    padding: 18px;
+    margin: 12px 0;
+  }
+  .warning-box h4 { font-size: 0.95rem; color: #991b1b; margin-bottom: 10px; }
+  .warning-box ul { padding-left: 20px; }
+  .warning-box li { font-size: 0.9rem; color: #7f1d1d; margin-bottom: 6px; line-height: 1.5; }
+
+  /* Domain grid */
+  .domain-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 12px 0; }
+  .domain-item {
+    padding: 10px 14px;
+    border-radius: 6px;
+    font-family: monospace;
+    font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .domain-item.broken { background: var(--red-light); border: 1px solid var(--red-border); }
+  .domain-item.working { background: var(--green-light); border: 1px solid var(--green-mid); }
+  .domain-item .status { font-weight: 700; }
+  .domain-item .status.red { color: var(--red); }
+  .domain-item .status.green { color: var(--green); }
+
+  /* Architecture diagram */
+  .arch-box {
+    background: #f0f0f0;
+    border-radius: 10px;
+    padding: 20px;
+    margin: 12px 0;
+    font-family: monospace;
+    font-size: 0.85rem;
+    line-height: 2.2;
+  }
+
+  /* Comparison table */
+  .comp-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; margin: 12px 0; }
+  .comp-table thead tr { background: var(--green); color: white; }
+  .comp-table th { padding: 12px 16px; text-align: left; font-weight: 600; }
+  .comp-table th:not(:first-child) { text-align: center; }
+  .comp-table td { padding: 10px 16px; border: 1px solid var(--border); }
+  .comp-table td:not(:first-child) { text-align: center; }
+  .comp-table tr:nth-child(even) { background: var(--gray); }
+  .comp-table .yes { color: var(--green); font-weight: 700; }
+  .comp-table .no { color: var(--red); font-weight: 700; }
+  .comp-table th:first-child { border-radius: 8px 0 0 0; }
+  .comp-table th:last-child { border-radius: 0 8px 0 0; }
+
+  /* ROI table */
+  .roi-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; margin: 12px 0; }
+  .roi-table thead tr { background: var(--green); color: white; }
+  .roi-table th { padding: 12px 16px; text-align: center; font-weight: 600; }
+  .roi-table th:first-child { text-align: left; }
+  .roi-table td { padding: 10px 16px; border: 1px solid var(--border); text-align: center; }
+  .roi-table td:first-child { text-align: left; font-weight: 600; }
+  .roi-table tr:nth-child(even) { background: var(--gray); }
+  .roi-table .net-row { background: var(--green-light) !important; }
+  .roi-table .net-row td { font-weight: 800; font-size: 1rem; color: var(--green); border-color: var(--green-mid); }
+  .roi-table th:first-child { border-radius: 8px 0 0 0; }
+  .roi-table th:last-child { border-radius: 0 8px 0 0; }
+
+  /* Numbered talk items */
+  .talk-item { display: flex; gap: 16px; align-items: flex-start; margin-bottom: 16px; }
+  .talk-num {
+    flex-shrink: 0; width: 32px; height: 32px;
+    background: var(--green); color: white; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.85rem; font-weight: 700; margin-top: 2px;
+  }
+  .talk-content h4 { font-size: 0.95rem; font-weight: 700; margin-bottom: 4px; }
+  .talk-content p { font-size: 0.9rem; color: #444; line-height: 1.6; }
+
+  /* Question list */
+  .question-list { list-style: none; margin: 12px 0; padding: 0; }
+  .question-list li {
+    font-size: 0.9rem; padding: 12px 16px 12px 40px;
+    background: var(--gray); border-radius: 8px;
+    margin-bottom: 8px; line-height: 1.5;
+    position: relative;
+  }
+  .question-list li::before {
+    content: '?'; position: absolute; left: 16px; top: 11px;
+    font-size: 0.9rem; font-weight: 800; color: var(--green);
+  }
+
+  /* Outcome cards */
+  .outcome-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 16px 0; }
+  .outcome-card { border-radius: 12px; padding: 24px; }
+  .outcome-card.primary { background: var(--green); color: white; }
+  .outcome-card.fallback { background: var(--gray); border: 1px solid var(--border); }
+  .outcome-label { font-size: 0.68rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 8px; }
+  .outcome-card.primary .outcome-label { opacity: 0.7; }
+  .outcome-card.fallback .outcome-label { color: var(--text-light); }
+  .outcome-text { font-size: 0.95rem; font-weight: 700; line-height: 1.5; margin-bottom: 10px; }
+  .outcome-detail { font-size: 0.85rem; line-height: 1.6; }
+  .outcome-card.primary .outcome-detail { opacity: 0.85; }
+  .outcome-card.fallback .outcome-detail { color: #666; }
+
+  /* Roles grid */
+  .roles-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 16px 0; }
+  .role-card { border-radius: 12px; padding: 24px; }
+  .role-card.lead { background: var(--green); color: white; }
+  .role-card.support { background: var(--green-light); border: 2px solid var(--green); }
+  .role-name { font-size: 0.72rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
+  .role-card.lead .role-name { opacity: 0.8; }
+  .role-person { font-size: 1.15rem; font-weight: 700; margin-bottom: 10px; }
+  .role-desc { font-size: 0.88rem; line-height: 1.6; }
+  .role-card.lead .role-desc { opacity: 0.9; }
+
+  /* Timeline */
+  .timeline { position: relative; padding-left: 28px; margin: 16px 0; }
+  .timeline::before {
+    content: ''; position: absolute; left: 7px; top: 8px; bottom: 8px;
+    width: 2px; background: #d0d0d0;
+  }
+  .timeline-item { position: relative; margin-bottom: 16px; }
+  .timeline-item:last-child { margin-bottom: 0; }
+  .timeline-item::before {
+    content: ''; position: absolute; left: -24px; top: 7px;
+    width: 10px; height: 10px; border-radius: 50%;
+    background: var(--green); border: 2px solid white; box-shadow: 0 0 0 2px var(--green);
+  }
+  .timeline-item .date { font-size: 0.78rem; font-weight: 600; color: var(--green); margin-bottom: 2px; }
+  .timeline-item .event { font-size: 0.9rem; font-weight: 600; margin-bottom: 2px; }
+  .timeline-item .detail { font-size: 0.82rem; color: #666; line-height: 1.5; }
+
+  /* Audit grid */
+  .audit-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 12px 0; }
+  .audit-item {
+    padding: 10px 14px; border-radius: 8px;
+    border-left: 3px solid var(--border);
+  }
+  .audit-item.critical { background: var(--red-light); border-left-color: var(--red); }
+  .audit-item.warning { background: var(--amber-light); border-left-color: var(--amber); }
+  .audit-item.info { background: var(--gray); border-left-color: #d0d0d0; }
+  .audit-item .issue { font-size: 0.85rem; font-weight: 600; margin-bottom: 2px; }
+  .audit-item.critical .issue { color: #991b1b; }
+  .audit-item.warning .issue { color: #92400e; }
+  .audit-item.info .issue { color: #444; }
+  .audit-item .desc { font-size: 0.78rem; }
+  .audit-item.critical .desc { color: #7f1d1d; }
+  .audit-item.warning .desc { color: #78350f; }
+  .audit-item.info .desc { color: #666; }
+
+  /* Sidekick grid */
+  .sidekick-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 12px 0; }
+  .sidekick-card {
+    background: white; border-radius: 8px; padding: 14px;
+    border: 1px solid var(--amber-border);
+  }
+  .sidekick-card .topic { font-size: 0.85rem; font-weight: 700; color: #92400e; margin-bottom: 4px; }
+  .sidekick-card .insight { font-size: 0.82rem; color: #78350f; line-height: 1.5; }
+
+  /* Revenue grid */
+  .revenue-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 10px; margin: 12px 0;
+  }
+  .revenue-item { border-radius: 8px; padding: 14px; text-align: center; }
+  .revenue-item.primary { background: var(--green); color: white; }
+  .revenue-item .pct { font-size: 1.3rem; font-weight: 800; }
+  .revenue-item .channel { font-size: 0.72rem; margin-top: 2px; }
+  .revenue-item .amt { font-size: 0.82rem; font-weight: 600; margin-top: 4px; }
+  .revenue-item:not(.primary) { background: var(--gray); border: 1px solid var(--border); }
+  .revenue-item:not(.primary) .pct { color: var(--green); }
+  .revenue-item.zero .pct { color: var(--red); }
+  .revenue-item:not(.primary) .channel { color: var(--text-light); }
+
+  /* Leak grid */
+  .leak-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin: 12px 0; }
+  .leak-item {
+    background: var(--red-light); border: 1px solid var(--red-border);
+    border-radius: 8px; padding: 14px; text-align: center;
+  }
+  .leak-item .amt { font-size: 1.3rem; font-weight: 800; color: var(--red); }
+  .leak-item .what { font-size: 0.72rem; color: #991b1b; font-weight: 500; margin-top: 2px; }
+  .leak-item .why { font-size: 0.72rem; color: #7f1d1d; }
+
+  /* Plus badge */
+  .plus-badge {
+    display: inline-block; background: var(--dark); color: var(--white);
+    font-size: 0.7rem; font-weight: 700; padding: 3px 10px;
+    border-radius: 4px; letter-spacing: 0.5px; text-transform: uppercase; margin-left: 8px;
+  }
+  .plus-badge.amber { background: var(--amber); }
+
+  /* Section header */
+  .section-header {
+    margin: 32px 0 16px;
+    font-size: 1.3rem;
+    font-weight: 700;
+  }
+
+  /* Savings card */
+  .savings-card { background: linear-gradient(135deg, #e6f5f0 0%, #d1ede0 100%); border: 1px solid #b8e0cc; }
+  .savings-card .amount { font-size: 2rem; font-weight: 800; color: var(--green); }
+  .savings-card .desc { color: var(--text-light); font-size: 0.9rem; margin-top: 4px; }
+
+  /* Dark card */
+  .dark-card {
+    background: var(--green); border-radius: var(--radius);
+    padding: 28px; color: white; margin: 12px 0;
+  }
+  .dark-card h4 { font-size: 1rem; margin-bottom: 10px; }
+  .dark-card p { color: rgba(255,255,255,0.9); font-size: 0.95rem; line-height: 1.7; }
+
+  /* Footer CTA */
+  .footer-cta {
+    background: var(--dark); color: var(--white);
+    text-align: center; padding: 48px 20px;
+    border-radius: 24px; margin: 40px 0 20px;
+  }
+  .footer-cta h2 { font-size: 1.6rem; margin-bottom: 10px; justify-content: center; }
+  .footer-cta p { color: rgba(255,255,255,0.7); font-size: 0.95rem; margin-bottom: 6px; }
+
+  .page-footer {
+    text-align: center; padding: 16px;
+    font-size: 0.82rem; color: var(--text-light);
+  }
+
+  /* Badges */
+  .badge-pill {
+    display: inline-block; background: var(--green-light); color: var(--green);
+    font-size: 0.78rem; font-weight: 600; padding: 5px 12px; border-radius: 20px;
+  }
+  .badges-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    header h1 { font-size: 2rem; }
+    .stats-row, .people-grid, .outcome-grid, .roles-grid, .brand-grid { grid-template-columns: 1fr; }
+    .revenue-grid { grid-template-columns: repeat(2, 1fr); }
+    .audit-grid, .sidekick-grid, .domain-grid { grid-template-columns: 1fr; }
+    .leak-grid { grid-template-columns: 1fr; }
+  }
+
+  @media print {
+    body { background: white; }
+    .toolbar { display: none; }
+    .accordion-body { display: block !important; }
+    .accordion-header { border-radius: var(--radius) !important; }
+    header { border-radius: 0; }
+    .footer-cta { border-radius: 0; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="badge">Meeting Game Plan</div>
+  <h1>New Metric Media</h1>
+  <p class="subtitle">Letterkenny & Shoresy Official Store — Advanced to Plus</p>
+  <p class="prepared">Prepared for <strong>Joe Strolz</strong> & <strong>Kyle Dugandzic</strong></p>
+</header>
+
+<div class="container">
+
+  <div class="toolbar">
+    <button onclick="expandAll()">Expand all</button>
+    <button onclick="collapseAll()">Collapse all</button>
+    <button onclick="window.print()">Save as PDF</button>
+  </div>
+
+  <!-- Meeting Details -->
+  <div class="card">
+    <h2><span class="icon">&#128197;</span> Meeting Details</h2>
+    <div class="meeting-grid">
+      <div class="meeting-item">
+        <div class="label">Meeting</div>
+        <div class="value">Mon, June 8 · 8am PT</div>
+      </div>
+      <div class="meeting-item">
+        <div class="label">Duration</div>
+        <div class="value">30 minutes</div>
+      </div>
+      <div class="meeting-item">
+        <div class="label">Prep Call</div>
+        <div class="value">Fri, June 5 · 9am PT</div>
+      </div>
+      <div class="meeting-item">
+        <div class="label">Format</div>
+        <div class="value">Google Meet</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Account Snapshot -->
+  <div class="card">
+    <h2><span class="icon">&#128200;</span> Account Snapshot</h2>
+    <div class="stats-row">
+      <div class="stat-box">
+        <div class="number">$2.85M</div>
+        <div class="stat-label">Annual GMV</div>
+      </div>
+      <div class="stat-box">
+        <div class="number">$237K</div>
+        <div class="stat-label">Monthly Sales</div>
+      </div>
+      <div class="stat-box">
+        <div class="number">$101</div>
+        <div class="stat-label">AOV</div>
+      </div>
+      <div class="stat-box">
+        <div class="number">1.80%</div>
+        <div class="stat-label">Conversion Rate</div>
+      </div>
+    </div>
+    <p>New Metric Media is an award-winning indie comedy studio in Toronto, founded by Mark Montefiore. They describe themselves as a "global 360-degree comedy entertainment studio." The Shopify storefront is the commerce engine for their entire entertainment ecosystem.</p>
+  </div>
+
+  <!-- Context banner -->
+  <div class="info-banner amber">
+    <strong>Context:</strong> The previous opportunity (Kyle to Raffael) closed lost on June 1. Raf said Plus doesn't make commercial sense until $6-7M revenue (projected 2027). Joe's email to Jeff re-opens the conversation at the COO level through exec air cover — a different decision-maker with a different lens.
+  </div>
+
+  <!-- ==================== ACCORDIONS ==================== -->
+
+  <h2 class="section-header">Meeting Prep</h2>
+
+  <!-- The Setup -->
+  <div class="accordion">
+    <div class="accordion-header active" onclick="toggleAccordion(this)">
+      <span><span class="check">&#10003;</span> The Setup — How This Meeting Happened</span>
+      <span class="toggle">&#9662;</span>
+    </div>
+    <div class="accordion-body show">
+      <p>Joe Strolz cold-emailed Jeff Hersh about mobile checkout optimization for peak fan moments. Jeff replied same day — "Definitely worth a chat." They have a pre-existing relationship from Jeff's Bell Media days and Joe's time at Snap/AOL. This is a peer-level exec conversation, not a sales pitch.</p>
+
+      <h3>Account History</h3>
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="date">Feb 26, 2026</div>
+          <div class="event">Discovery call with Raffael Sarracini</div>
+          <div class="detail">18 min call. Great rapport. Raf outlined 360 ecosystem strategy, Vimeo content plans, ticket sales ambitions. Said Plus makes sense at $6-7M (projecting 2027). Asked Kyle to send pricing.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="date">Feb 26, 2026</div>
+          <div class="event">Follow-up email with Plus pricing</div>
+          <div class="detail">Sent ROI breakdown. Offered $2,500 credit (1yr) or $4,600 credit (3yr). Raf replied: "Will do planning work and let you know."</div>
+        </div>
+        <div class="timeline-item">
+          <div class="date">June 1, 2026</div>
+          <div class="event">Opportunity closed lost</div>
+          <div class="detail">Timing wasn't right at the operational level.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="date">June 2, 2026</div>
+          <div class="event">Joe Strolz cold-emails Jeff Hersh</div>
+          <div class="detail">Jeff replied same day: "Definitely worth a chat." They discover they know each other from Bell Media / Snap-AOL days.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="date">June 4, 2026</div>
+          <div class="event">Meeting confirmed for June 8</div>
+          <div class="detail">Guil Gomes coordinated. Prep call set for June 5 at 9am PT.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- People in the Room -->
+  <div class="accordion">
+    <div class="accordion-header" onclick="toggleAccordion(this)">
+      <span><span class="check">&#10003;</span> People in the Room</span>
+      <span class="toggle">&#9662;</span>
+    </div>
+    <div class="accordion-body">
+      <div class="people-grid">
+        <div class="person-card merchant">
+          <span class="person-tag amber">New Metric Media</span>
+          <div class="name">Jeff Hersh</div>
+          <div class="title">Chief Operating Officer</div>
+          <div class="detail">Former VP of Strategy, OTT Distribution & Premium SVOD at Bell Media. Joined NMM in 2022. Mandate: corporate strategy, acquisitions, partnerships, raising capital, and monetization. Previously met Joe at Snap/AOL. <strong>416-888-2922</strong></div>
+        </div>
+        <div class="person-card shopify">
+          <span class="person-tag green">Shopify</span>
+          <div class="name">Joe Strolz</div>
+          <div class="title">VP, Global Sales & Support</div>
+          <div class="detail">Runs Shopify's global sales and support. Does his own direct-to-merchant sales work because he "loves it." Coordinated by Guil Gomes.</div>
+        </div>
+        <div class="person-card merchant">
+          <span class="person-tag amber">New Metric Media</span>
+          <div class="name">Evette Bernabe</div>
+          <div class="title">Executive Assistant & Office Manager</div>
+          <div class="detail">Jeff's EA. Coordinated scheduling. May or may not be on the call.</div>
+        </div>
+        <div class="person-card shopify">
+          <span class="person-tag green">Shopify</span>
+          <div class="name">Kyle Dugandzic</div>
+          <div class="title">AE, NA SMB Crosssell</div>
+          <div class="detail">Owns this account. Has existing relationship with Raffael. Met with Raf Feb 26. Knows the business, the numbers, the roadmap.</div>
+        </div>
+      </div>
+
+      <div class="sub-section">
+        <h4>The Person NOT in the Room</h4>
+        <p><strong>Raffael Sarracini</strong> handles day-to-day e-commerce ops. Former Adidas (12 yrs in streetwear). Met with Kyle Feb 26 and said Plus doesn't make sense until $6-7M. <strong>Raf's lens is operational cost/benefit. Jeff's lens is strategic growth and monetization.</strong> These are different conversations.</p>
+      </div>
+
+      <h3>Meeting Roles</h3>
+      <div class="roles-grid">
+        <div class="role-card lead">
+          <div class="role-name">Meeting Lead</div>
+          <div class="role-person">Joe Strolz</div>
+          <div class="role-desc">Sets the tone — consultative and strategic. Peer conversation with Jeff. Big-picture commerce strategy, not a product demo.</div>
+        </div>
+        <div class="role-card support">
+          <div class="role-name">Account Expert</div>
+          <div class="role-person">Kyle Dugandzic</div>
+          <div class="role-desc">Provides account context and product specifics when Joe opens the door. Jump in with specifics, not pitches.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Intel for Joe -->
+  <div class="accordion">
+    <div class="accordion-header" onclick="toggleAccordion(this)">
+      <span><span class="check">&#10003;</span> Intel to Brief Joe On</span>
+      <span class="toggle">&#9662;</span>
+    </div>
+    <div class="accordion-body">
+      <div class="sub-section">
+        <h4>1. Jeff and Joe Already Know Each Other</h4>
+        <p>Jeff recognized Joe from his Bell Media days: "We've met before. I used to be at Bell Media and likely met as part of some partnership discussion when you were at either Snap or AOL." Joe's reaction: "omg. Ur that Jeff Hersh!! What a wonderful twist!" Use this warmth. This isn't a cold meeting.</p>
+      </div>
+      <div class="sub-section">
+        <h4>2. Previous Engagement Context</h4>
+        <p>Kyle had a great call with Raffael (Director-level, handles e-commerce ops) on Feb 26. Rapport was excellent — agreed to grab beers in Toronto in July. Raf's position: Plus makes sense at $6-7M revenue, projected 2027. He's focused on near-term platform upgrades with their agency (Symmetry Commerce) first.</p>
+      </div>
+      <div class="sub-section">
+        <h4>3. Their Strategic Vision</h4>
+        <p>The big play: a unified platform where customers can buy merch, stream content (via Vimeo API), and purchase live event tickets — with cross-sell loyalty tying it all together. Raf said "I don't know that that's really been done before." This is the hook for Plus — it's the platform that makes that vision technically feasible.</p>
+      </div>
+      <div class="sub-section">
+        <h4>4. The Numbers</h4>
+        <p>$2.85M GMV · $237K/mo online sales · $101 AOV · 1.80% CVR · Advanced plan · Increased monthly cost for Plus: ~$1,548. Currently working with agency Symmetry Commerce on platform upgrades.</p>
+      </div>
+    </div>
+  </div>
+
+  <h2 class="section-header">Account Deep Dive</h2>
+
+  <!-- Brand Ecosystem -->
+  <div class="accordion">
+    <div class="accordion-header" onclick="toggleAccordion(this)">
+      <span><span class="check">&#10003;</span> Brand Ecosystem & Growth Trajectory</span>
+      <span class="toggle">&#9662;</span>
+    </div>
+    <div class="accordion-body">
+      <p>Not just a merch store — a commerce-powered entertainment empire running multiple brands from a single Advanced store.</p>
+      <div class="brand-grid">
+        <div class="brand-chip"><div class="brand-name">Letterkenny</div><div class="brand-type">TV Series · Merch</div></div>
+        <div class="brand-chip"><div class="brand-name">Shoresy</div><div class="brand-type">TV Series · Merch · S5 Live</div></div>
+        <div class="brand-chip"><div class="brand-name">Shoresy Classic</div><div class="brand-type">Live Hockey Events</div></div>
+        <div class="brand-chip"><div class="brand-name">Guns N' Bruno</div><div class="brand-type">Whiskey Brand</div></div>
+        <div class="brand-chip"><div class="brand-name">Legends of the North</div><div class="brand-type">Video Game</div></div>
+        <div class="brand-chip"><div class="brand-name">Content Streaming</div><div class="brand-type">Vimeo · Planned</div></div>
+      </div>
+
+      <h3>Content Empire Expansion</h3>
+      <div class="sub-section">
+        <h4>New Shows in Production</h4>
+        <ul>
+          <li>"Hate the Player" (GameTV/Paramount+)</li>
+          <li>"I Kill the Bear" (Crave)</li>
+          <li>Shoresy Season 5 (just dropped)</li>
+        </ul>
+      </div>
+      <div class="sub-section">
+        <h4>Strategic Acquisitions</h4>
+        <ul>
+          <li>Kelly&Kelly podcast studio (Oct 2025)</li>
+          <li>Investment in Good Walk Entertainment (LA)</li>
+          <li>shozerTV YouTube channel launched</li>
+        </ul>
+      </div>
+      <div class="highlight">
+        <span class="emoji">&#127942;</span> Named <strong>Playback's Strategist of the Year 2025</strong> — the industry sees them as a serious business, not just a comedy brand. Each new show = new merch line = more peak fan moments.
+      </div>
+
+      <h3>The Counterfeit Problem</h3>
+      <p>Raffael flagged ongoing issues with counterfeit merchandise sites, especially from Chinese sellers. Called it "whack-a-mole." A Plus checkout with trust badges and authenticity messaging directly addresses this.</p>
+    </div>
+  </div>
+
+  <!-- Performance Deep Dive -->
+  <div class="accordion">
+    <div class="accordion-header" onclick="toggleAccordion(this)">
+      <span><span class="check">&#10003;</span> Performance & Trends</span>
+      <span class="toggle">&#9662;</span>
+    </div>
+    <div class="accordion-body">
+      <div class="stats-row">
+        <div class="stat-box">
+          <div class="number red">-11.8%</div>
+          <div class="stat-label">YoY GMV</div>
+        </div>
+        <div class="stat-box">
+          <div class="number red">-15.7%</div>
+          <div class="stat-label">YoY Sessions</div>
+        </div>
+        <div class="stat-box">
+          <div class="number amber">56.5%</div>
+          <div class="stat-label">Checkout Abandon</div>
+        </div>
+        <div class="stat-box">
+          <div class="number">$0</div>
+          <div class="stat-label">Ad Spend L30D</div>
+        </div>
+      </div>
+      <p><strong>The story:</strong> Revenue is down YoY but recovering MoM (+16.8%). Sessions dropping. Checkout abandonment is massive — 2,909 initiated checkouts but only 1,264 completed. They spend $0 on ads, meaning 98% of revenue is organic/direct traffic. This is a brand with built-in demand that's leaking conversions.</p>
+      <p><strong>Avg checkout price:</strong> $119.29 L30D (+37.4% YoY, +8.3% MoM) — customers are spending more per order, they just need more to complete checkout.</p>
+
+      <h3>Revenue Attribution</h3>
+      <div class="revenue-grid">
+        <div class="revenue-item primary">
+          <div class="pct">98%</div>
+          <div class="channel" style="opacity:0.8;">Online Store</div>
+          <div class="amt">$2.78M</div>
+        </div>
+        <div class="revenue-item">
+          <div class="pct">1.5%</div>
+          <div class="channel">Shop App</div>
+          <div class="amt">$42K</div>
+        </div>
+        <div class="revenue-item">
+          <div class="pct">0.2%</div>
+          <div class="channel">Draft Orders</div>
+          <div class="amt">$4.9K</div>
+        </div>
+        <div class="revenue-item zero">
+          <div class="pct">0%</div>
+          <div class="channel">Social</div>
+          <div class="amt">$798</div>
+        </div>
+      </div>
+      <p>Almost zero social commerce despite 968K Instagram followers. Shop App underleveraged at $42K. Social is $798. Huge upside if they activate these channels.</p>
+
+      <h3>Money Left on the Table</h3>
+      <div class="leak-grid">
+        <div class="leak-item">
+          <div class="amt">$88.6K</div>
+          <div class="what">Through 3P Installments</div>
+          <div class="why">3% of GMV via Sezzle</div>
+        </div>
+        <div class="leak-item">
+          <div class="amt">$540K</div>
+          <div class="what">Capital Offer Unused</div>
+          <div class="why">1.059 factor rate · never taken</div>
+        </div>
+        <div class="leak-item">
+          <div class="amt">$798</div>
+          <div class="what">Social Commerce Rev</div>
+          <div class="why">From 968K IG followers</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Audience -->
+  <div class="accordion">
+    <div class="accordion-header" onclick="toggleAccordion(this)">
+      <span><span class="check">&#10003;</span> Massive Audience, Underleveraged</span>
+      <span class="toggle">&#9662;</span>
+    </div>
+    <div class="accordion-body">
+      <div class="stats-row">
+        <div class="stat-box">
+          <div class="number">968K</div>
+          <div class="stat-label">Instagram Followers</div>
+        </div>
+        <div class="stat-box">
+          <div class="number">55K</div>
+          <div class="stat-label">Shop App Followers</div>
+        </div>
+        <div class="stat-box">
+          <div class="number">138K</div>
+          <div class="stat-label">Fan Page Followers</div>
+        </div>
+        <div class="stat-box">
+          <div class="number">23%</div>
+          <div class="stat-label">Repeat Customer Rate</div>
+        </div>
+      </div>
+      <p><strong>Missing monetization:</strong> No loyalty/rewards program. No referral program. No birthday rewards. Only capture mechanism is a 10% newsletter discount popup. 23% repeat customer rate with zero loyalty infrastructure — they're leaving repeat revenue on the table.</p>
+
+      <div class="highlight">
+        <span class="emoji">&#128161;</span> <strong>Plus unlock:</strong> Shopify Audiences (data-driven ad targeting from 150M+ Shop Pay users) + checkout customization for loyalty upsells + LaunchPad for scheduled fan drops around show premieres.
+      </div>
+    </div>
+  </div>
+
+  <!-- Sidekick Intelligence -->
+  <div class="accordion">
+    <div class="accordion-header" onclick="toggleAccordion(this)">
+      <span><span class="check">&#10003;</span> What They're Asking Sidekick <span style="font-size:0.8rem;color:var(--text-light);font-weight:400;">(34 conversations)</span></span>
+      <span class="toggle">&#9662;</span>
+    </div>
+    <div class="accordion-body">
+      <p>Their Sidekick usage reveals exactly what keeps them up at night. This is intelligence straight from the merchant — not assumptions.</p>
+      <div class="sidekick-grid">
+        <div class="sidekick-card">
+          <div class="topic">Declining Sales Anxiety</div>
+          <div class="insight">"Why are my sales decreasing the last two weeks?" — Multiple sessions analyzing CVR drops, traffic declines, and seasonal patterns.</div>
+        </div>
+        <div class="sidekick-card">
+          <div class="topic">Funnel Optimization</div>
+          <div class="insight">"Where is my funnel leaky and what are my biggest opportunities?" — Asked to benchmark against industry and model revenue.</div>
+        </div>
+        <div class="sidekick-card">
+          <div class="topic">Geographic Expansion</div>
+          <div class="insight">Built business cases for Australia and western Canada. Pulled city-level revenue data for Calgary, Edmonton, Vancouver.</div>
+        </div>
+        <div class="sidekick-card">
+          <div class="topic">Markets Pricing Concern</div>
+          <div class="insight">"I did not see any notification that a region would cost an extra $59." — Paying per-region Markets fees on Advanced.</div>
+        </div>
+        <div class="sidekick-card">
+          <div class="topic">Profit Margin Tracking</div>
+          <div class="insight">Checking per-order profit margins, Q1 vs Q2 comparisons, and YoY profitability. They care about margins, not just topline.</div>
+        </div>
+        <div class="sidekick-card">
+          <div class="topic">CRO Game Plan</div>
+          <div class="insight">"Working on a CRO game plan among other proactive actions to help make this year stronger." — Actively trying to solve conversion.</div>
+        </div>
+      </div>
+      <div class="highlight">
+        <span class="emoji">&#127919;</span> <strong>Bottom line:</strong> They already know they have a conversion problem. They're trying to solve it with Sidekick and their agency. Plus checkout extensibility is the actual solution they're working toward without knowing it.
+      </div>
+    </div>
+  </div>
+
+  <h2 class="section-header">The Plus Case</h2>
+
+  <!-- Shoresy Classic Ticket Selling -->
+  <div class="accordion">
+    <div class="accordion-header active" onclick="toggleAccordion(this)">
+      <span><span class="check">&#10003;</span> Shoresy Classic Ticket Selling <span class="plus-badge amber">Key Discovery</span></span>
+      <span class="toggle">&#9662;</span>
+    </div>
+    <div class="accordion-body show">
+      <p>Based on an internal SE deep dive for DPG Media, a Dutch media company selling event tickets through Shopify. NMM's use case is the simpler version. The five broken Shoresy Classic domains prove they already tried to bring tickets into Shopify and failed.</p>
+
+      <h3>The Smoking Gun — 5 Broken Domains</h3>
+      <div class="highlight red">
+        NMM's internal admin shows five Shoresy Classic domains connected to the store, all with DNS errors ("multiple_a_records_found"). Someone tried to set them up but misconfigured the DNS. This changes the narrative from "you should consider selling tickets on Shopify" to <strong>"you already tried and couldn't get there. Let us help you finish what you started."</strong>
+      </div>
+      <div class="domain-grid">
+        <div class="domain-item broken"><span class="status red">&#x2717;</span> shoresyclassic.ca</div>
+        <div class="domain-item broken"><span class="status red">&#x2717;</span> shoresyclassic.com</div>
+        <div class="domain-item broken"><span class="status red">&#x2717;</span> shoresyclassic.hockey</div>
+        <div class="domain-item broken"><span class="status red">&#x2717;</span> shoresyclassic.live</div>
+        <div class="domain-item broken"><span class="status red">&#x2717;</span> shoresyclassic.shop</div>
+        <div class="domain-item working"><span class="status green">&#x2713;</span> letterkenny.tv <span style="color:#888;font-size:0.75rem;">(primary)</span></div>
+      </div>
+
+      <h3>Live Events Scale</h3>
+      <div class="stats-row">
+        <div class="stat-box">
+          <div class="number">8</div>
+          <div class="stat-label">NHL Arenas (2025-26)</div>
+        </div>
+        <div class="stat-box">
+          <div class="number">7,500</div>
+          <div class="stat-label">Toronto Tickets in <30hrs</div>
+        </div>
+        <div class="stat-box">
+          <div class="number">25K+</div>
+          <div class="stat-label">Fans (2024 Season)</div>
+        </div>
+        <div class="stat-box">
+          <div class="number">$0</div>
+          <div class="stat-label">Ticket Data Captured</div>
+        </div>
+      </div>
+      <p>Venues: Little Caesars Arena (Detroit), Scotiabank Arena (Toronto), TD Garden (Boston), UBS Arena (NY), plus LA, Calgary, Edmonton, Vancouver. All tickets sold via Bandsintown — zero attribution, zero customer data, zero cross-sell to merch.</p>
+
+      <h3>Why Their Use Case Is Simple</h3>
+      <div class="sub-section" style="border: 2px solid var(--green);">
+        <h4 style="color:var(--green);">NMM: Fixed Pricing — 4-6 Week Build</h4>
+        <ul>
+          <li>Fixed ticket prices (GA, Gold VIP, Silver VIP, Bronze VIP)</li>
+          <li>General admission (no assigned seating)</li>
+          <li>They ARE the event provider (no external ticket API to integrate)</li>
+          <li>Known venues and dates (8 NHL arenas, dates set in advance)</li>
+          <li>Mixed cart is a feature — ticket + merch in one checkout</li>
+        </ul>
+      </div>
+
+      <h3>The Architecture — Four Components</h3>
+      <div class="talk-item">
+        <div class="talk-num">1</div>
+        <div class="talk-content">
+          <h4>Theme App Extension — Event Selection UI <span style="font-size:0.78rem;color:var(--text-light);font-weight:400;">(2-3 weeks · any plan)</span></h4>
+          <p>Custom block on the product page: venue selector, date picker, guest counter, tier selector (GA / Gold VIP / Silver VIP / Bronze VIP). Built as a Theme App Extension so it works in the theme editor.</p>
+        </div>
+      </div>
+      <div class="talk-item">
+        <div class="talk-num">2</div>
+        <div class="talk-content">
+          <h4>Line Item Properties — Event Data Persistence <span style="font-size:0.78rem;color:var(--text-light);font-weight:400;">(included in #1 · any plan)</span></h4>
+          <p>Event details attach as key-value pairs on the line item and persist through checkout. Venue, date, tier, guests — all appear on the order and available via webhooks for fulfillment.</p>
+        </div>
+      </div>
+      <div class="talk-item">
+        <div class="talk-num" style="background:var(--amber);">3</div>
+        <div class="talk-content">
+          <h4>Checkout UI Extensions — The Plus Unlock <span class="plus-badge">Plus Required</span></h4>
+          <p>This is where Plus becomes mandatory. Extensions on the information, shipping, and payment steps let them display event details in checkout, add trust messaging ("Official Shoresy Classic ticket"), cross-sell merch, and collect VIP meet & greet names. <strong>Without Plus, they cannot customize checkout steps at all.</strong></p>
+        </div>
+      </div>
+      <div class="talk-item">
+        <div class="talk-num">4</div>
+        <div class="talk-content">
+          <h4>Fulfillment — Ticket Delivery <span style="font-size:0.78rem;color:var(--text-light);font-weight:400;">(1-2 weeks · Flow on Plus)</span></h4>
+          <p>Order webhook fires on payment. Flow automation generates and emails the ticket (PDF, QR code, Apple Wallet). Since NMM is the event provider with no external system to sync, this is the simplest version.</p>
+        </div>
+      </div>
+
+      <h3>Domain Architecture — No Expansion Stores Needed</h3>
+      <p>Those five domains don't need separate stores. They're front doors to the same building:</p>
+      <div class="arch-box">
+        <span style="color:var(--green);font-weight:700;">letterkenny.tv</span> <span style="color:#888;">&#8594;</span> Main storefront (all merch, all brands)<br>
+        <span style="color:var(--amber);font-weight:700;">shoresyclassic.com</span> <span style="color:#888;">&#8594;</span> Routes to Shoresy Classic collection/landing page<br>
+        <span style="color:#888;">shoresyclassic.ca / .hockey / .live / .shop</span> <span style="color:#888;">&#8594;</span> Same store, alternate domains
+      </div>
+      <p>Same checkout, same customer data, same cross-sell. A fan lands on shoresyclassic.com, buys a ticket, adds a jersey to the same cart, checks out once.</p>
+
+      <div class="warning-box">
+        <h4>Why Expansion Stores Don't Apply Here</h4>
+        <ul>
+          <li><strong>Different brand name:</strong> "Shoresy Classic" is not "Letterkenny" — expansion stores must be the same brand name</li>
+          <li><strong>Different goods:</strong> Event tickets are not merchandise — expansion stores must sell the same goods</li>
+          <li><strong>Same issue for Guns N' Bruno:</strong> A whiskey brand also fails the "same name, same goods" test</li>
+          <li><strong>They don't need it anyway:</strong> Single-store with collection routing is better — keeps cross-sell in one cart</li>
+        </ul>
+      </div>
+
+      <h3>What Plus Unlocks for Tickets</h3>
+      <table class="comp-table">
+        <thead>
+          <tr><th>Capability</th><th>Advanced</th><th>Plus</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Create ticket products with variants</td><td class="yes">Yes</td><td class="yes">Yes</td></tr>
+          <tr><td>Theme App Extension for event UI</td><td class="yes">Yes</td><td class="yes">Yes</td></tr>
+          <tr><td>Line item properties on cart</td><td class="yes">Yes</td><td class="yes">Yes</td></tr>
+          <tr><td style="font-weight:600;">Customize checkout steps for ticket flow</td><td class="no">No</td><td class="yes">Yes</td></tr>
+          <tr><td style="font-weight:600;">Cross-sell merch during checkout</td><td class="no">No</td><td class="yes">Yes</td></tr>
+          <tr><td style="font-weight:600;">LaunchPad for scheduled ticket drops</td><td class="no">No</td><td class="yes">Yes</td></tr>
+          <tr><td style="font-weight:600;">API rate limits for on-sale spikes</td><td>200 pts/sec</td><td class="yes">1,000 pts/sec</td></tr>
+          <tr><td style="font-weight:600;">Cart Transform for bundle pricing</td><td>Limited</td><td class="yes">Full access</td></tr>
+          <tr><td style="font-weight:600;">Shopify Flow for ticket fulfillment</td><td>Basic</td><td class="yes">Full + custom tasks</td></tr>
+        </tbody>
+      </table>
+      <p>The theme UI and product setup work on Advanced. <strong>The checkout experience — where fans confirm event details, get cross-sold merch, and trust they're buying a real ticket — is Plus only.</strong> For a brand that sold 7,500 tickets in under 30 hours, checkout experience and API throughput for on-sale spikes is where it matters.</p>
+
+      <h3>Fast Path — App Store Option</h3>
+      <div class="sub-section">
+        <h4>GM Event Ticketing (4.8 stars)</h4>
+        <p>Event calendar, ticket management, QR code scanning, guest lists. Purpose-built for ticket selling on Shopify. Gets them selling tickets faster but with less control. Given they have an agency (Symmetry Commerce), the custom build is likely the right call for a premium entertainment brand.</p>
+      </div>
+
+      <div class="dark-card">
+        <h4>The Pitch for Joe on Tickets</h4>
+        <p>"They already tried to bring Shoresy Classic into Shopify — five domains connected to the store, all with broken DNS. The architecture to sell tickets natively is straightforward: a 4-6 week build for fixed-price general admission with VIP tiers. The missing piece is Plus, because they need checkout extensibility to build a proper ticket purchase flow with event details in checkout, cross-sell merch in the same cart, and handle the volume spikes when tickets go on sale. On Advanced, they can create the products but can't touch the checkout. That's why they gave up and are still on Bandsintown, losing all customer data and attribution on every sale across 8 NHL arenas."</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Customized Checkout -->
+  <div class="accordion">
+    <div class="accordion-header" onclick="toggleAccordion(this)">
+      <span><span class="check">&#10003;</span> Customized Checkout Opportunity <span class="plus-badge">Plus Exclusive</span></span>
+      <span class="toggle">&#9662;</span>
+    </div>
+    <div class="accordion-body">
+      <p>With Plus, full control to customize the checkout — branding, upsells, trust badges, progress bars, post-purchase flows. The most important page in the purchase journey.</p>
+
+      <div class="stats-row">
+        <div class="stat-box">
+          <div class="number amber">2,909</div>
+          <div class="stat-label">Checkouts Initiated (L30D)</div>
+        </div>
+        <div class="stat-box">
+          <div class="number red">1,264</div>
+          <div class="stat-label">Checkouts Completed</div>
+        </div>
+        <div class="stat-box">
+          <div class="number red">56.5%</div>
+          <div class="stat-label">Abandon Rate</div>
+        </div>
+        <div class="stat-box">
+          <div class="number">$119</div>
+          <div class="stat-label">Avg Checkout Price</div>
+        </div>
+      </div>
+
+      <p>With a $101 AOV and free shipping at $100, checkout progress bars alone could push that up. For a brand fighting counterfeits, trust badges and authenticity messaging in checkout directly address the "is this real?" hesitation that kills conversions.</p>
+
+      <div class="sub-section">
+        <h4>What Checkout Extensibility Enables</h4>
+        <ul>
+          <li><strong>Trust badges & authenticity messaging</strong> — "Official Letterkenny merch, not a counterfeit"</li>
+          <li><strong>Progress bars & free shipping thresholds</strong> — AOV is $101 with free shipping at $100</li>
+          <li><strong>Upsells & cross-sells</strong> — "Add matching hat?" during checkout</li>
+          <li><strong>Post-purchase one-click offers</strong> — vaulted payment token, no CVV re-entry</li>
+          <li><strong>6,000 checkouts/min</strong> bandwidth for live event merch drops</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- International -->
+  <div class="accordion">
+    <div class="accordion-header" onclick="toggleAccordion(this)">
+      <span><span class="check">&#10003;</span> International & Markets Expansion</span>
+      <span class="toggle">&#9662;</span>
+    </div>
+    <div class="accordion-body">
+      <p>They've set up Shopify Markets with 4 regions and are actively expanding.</p>
+      <ul>
+        <li><strong>Australia:</strong> Built a business case, set up market, asked Sidekick about free shipping messaging</li>
+        <li><strong>Western Canada:</strong> Pulled city-level data for Calgary, Edmonton, Vancouver</li>
+        <li><strong>Europe:</strong> EU payment methods enabled (Bancontact, iDEAL, Wero)</li>
+        <li><strong>Ontario deep-dive:</strong> Analyzed top cities by revenue over 2 years</li>
+      </ul>
+
+      <div class="highlight red">
+        <span class="emoji">&#128176;</span> They're paying <strong>$59/region</strong> for Markets on Advanced and were surprised by the fee: "I did not see any notification that a region would cost an extra $59." On Plus, Markets Pro is included — eliminates per-region fees and adds duty/tax calculation.
+      </div>
+
+      <table class="comp-table">
+        <thead><tr><th>Markets Feature</th><th>Advanced</th><th>Plus</th></tr></thead>
+        <tbody>
+          <tr><td>Number of Markets</td><td>3 + add-on</td><td class="yes">Up to 50</td></tr>
+          <tr><td>Per-region pricing</td><td>$59/region</td><td class="yes">Included</td></tr>
+          <tr><td>Managed Markets (MoR)</td><td class="no">No</td><td class="yes">Yes</td></tr>
+          <tr><td>Duty/tax calculation</td><td>Basic</td><td class="yes">Full</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Website Audit -->
+  <div class="accordion">
+    <div class="accordion-header" onclick="toggleAccordion(this)">
+      <span><span class="check">&#10003;</span> Website Audit — 13 Issues Found</span>
+      <span class="toggle">&#9662;</span>
+    </div>
+    <div class="accordion-body">
+      <p>A hands-on crawl of letterkenny.tv surfaced concrete, fixable issues — the kind of specifics that show we actually looked at the site.</p>
+      <div class="audit-grid">
+        <div class="audit-item critical"><div class="issue">No product reviews</div><div class="desc">Selling $220+ jerseys with zero social proof</div></div>
+        <div class="audit-item critical"><div class="issue">No loyalty program</div><div class="desc">23% repeat rate with zero loyalty infrastructure</div></div>
+        <div class="audit-item critical"><div class="issue">No checkout upsells</div><div class="desc">No "frequently bought together" or cart upsells</div></div>
+        <div class="audit-item critical"><div class="issue">Broken social link</div><div class="desc">First icon in footer has no hyperlink</div></div>
+        <div class="audit-item warning"><div class="issue">Heavy page weight</div><div class="desc">No lazy loading on image-heavy pages</div></div>
+        <div class="audit-item warning"><div class="issue">Size chart friction</div><div class="desc">Separate page for sizing — adds clicks for jersey buyers</div></div>
+        <div class="audit-item warning"><div class="issue">No urgency indicators</div><div class="desc">No stock levels, no "only 3 left" messaging</div></div>
+        <div class="audit-item warning"><div class="issue">Whiskey brand breaks flow</div><div class="desc">Links to external subdomain mid-shopping</div></div>
+        <div class="audit-item info"><div class="issue">Klaviyo form issues</div><div class="desc">Struggled to get signup forms working (Sidekick)</div></div>
+        <div class="audit-item info"><div class="issue">EU payments enabled</div><div class="desc">Bancontact, iDEAL, Wero — international reach</div></div>
+        <div class="audit-item info"><div class="issue">Contact info obfuscated</div><div class="desc">"yertenplybud @ letterkenny dot tv"</div></div>
+        <div class="audit-item info"><div class="issue">Bundle product bug</div><div class="desc">"Shore bundle" hat not appearing in cart</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Platform Readiness -->
+  <div class="accordion">
+    <div class="accordion-header" onclick="toggleAccordion(this)">
+      <span><span class="check">&#10003;</span> Platform Readiness</span>
+      <span class="toggle">&#9662;</span>
+    </div>
+    <div class="accordion-body">
+      <div class="stats-row">
+        <div class="stat-box">
+          <div class="number">$29,292</div>
+          <div class="stat-label">Estimated Plus IPP</div>
+        </div>
+        <div class="stat-box">
+          <div class="number">$42,540</div>
+          <div class="stat-label">Plus Lifetime Revenue</div>
+        </div>
+        <div class="stat-box">
+          <div class="number">Medium</div>
+          <div class="stat-label">B2B Readiness</div>
+        </div>
+        <div class="stat-box">
+          <div class="number">8</div>
+          <div class="stat-label">Active Shopify Flows</div>
+        </div>
+      </div>
+      <p><strong>Eligible for:</strong> Plus, Plus Trial, Capital ($540K), Shop Pay Installments, POS Pro, Shopify Retail Payments.</p>
+      <p>The internal model already scores them as a Plus merchant. They're running 8 active Shopify Flows, which shows technical sophistication — they'll actually use the advanced features. 11 support tickets since Jan 2024, all via chat — low-maintenance, self-sufficient merchant.</p>
+    </div>
+  </div>
+
+  <!-- ROI Analysis -->
+  <div class="accordion">
+    <div class="accordion-header" onclick="toggleAccordion(this)">
+      <span><span class="check">&#10003;</span> ROI Analysis</span>
+      <span class="toggle">&#9662;</span>
+    </div>
+    <div class="accordion-body">
+      <p>Based on current L365D sales of $237K/mo, $101 AOV, and 1.80% CVR.</p>
+
+      <h3>Conversion Rate Lift</h3>
+      <table class="roi-table">
+        <thead><tr><th>CVR Lift</th><th>3%</th><th>5%</th><th>7%</th></tr></thead>
+        <tbody>
+          <tr><td>New CVR</td><td>1.85%</td><td>1.89%</td><td>1.93%</td></tr>
+          <tr><td>New Monthly Sales</td><td>$244,110</td><td>$248,850</td><td>$253,590</td></tr>
+          <tr><td>Additional Monthly</td><td style="color:var(--green);font-weight:700;">+$7,110</td><td style="color:var(--green);font-weight:700;">+$11,850</td><td style="color:var(--green);font-weight:700;">+$16,590</td></tr>
+        </tbody>
+      </table>
+
+      <h3>AOV Lift</h3>
+      <table class="roi-table">
+        <thead><tr><th>AOV Lift</th><th>2%</th><th>4%</th><th>6%</th></tr></thead>
+        <tbody>
+          <tr><td>New AOV</td><td>$103</td><td>$105</td><td>$107</td></tr>
+          <tr><td>Additional Monthly</td><td style="color:var(--green);font-weight:700;">+$4,740</td><td style="color:var(--green);font-weight:700;">+$9,480</td><td style="color:var(--green);font-weight:700;">+$9,480</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Combined Impact</h3>
+      <table class="roi-table">
+        <thead><tr><th></th><th>Conservative</th><th>Moderate</th><th>Aggressive</th></tr></thead>
+        <tbody>
+          <tr><td>Monthly Sales Increase</td><td>$11,850</td><td>$21,330</td><td>$26,070</td></tr>
+          <tr><td>Increased Cost</td><td style="color:var(--red);">-$1,548</td><td style="color:var(--red);">-$1,548</td><td style="color:var(--red);">-$1,548</td></tr>
+          <tr class="net-row"><td>Net Benefit / Month</td><td>$10,302</td><td>$19,782</td><td>$24,522</td></tr>
+          <tr><td style="font-weight:700;">Annualized Net Benefit</td><td style="color:var(--green);font-weight:700;">$123,624</td><td style="color:var(--green);font-weight:700;">$237,384</td><td style="color:var(--green);font-weight:700;">$294,264</td></tr>
+        </tbody>
+      </table>
+
+      <div class="highlight">
+        <span class="emoji">&#128200;</span> Even at the most conservative scenario, Plus pays for itself <strong>6.6x over</strong> every month. The $1,548/mo increase is a rounding error against $10K-$25K/mo in net new revenue.
+      </div>
+    </div>
+  </div>
+
+  <h2 class="section-header">Meeting Playbook</h2>
+
+  <!-- Talking Points -->
+  <div class="accordion">
+    <div class="accordion-header" onclick="toggleAccordion(this)">
+      <span><span class="check">&#10003;</span> Talking Points</span>
+      <span class="toggle">&#9662;</span>
+    </div>
+    <div class="accordion-body">
+      <p>Aligned with Joe's outreach angle: maximizing sales during peak fan moments + mobile checkout optimization. Frame everything as matching their platform to their strategy.</p>
+
+      <div class="talk-item">
+        <div class="talk-num">1</div>
+        <div class="talk-content">
+          <h4>Peak fan moments = perishable revenue</h4>
+          <p>Shoresy Season 5 just dropped. Shoresy Classic events are happening. When fans are hyped, there's a narrow window to convert. Plus gives customized checkout and 6,000 checkouts/min bandwidth for live event drops and flash sales.</p>
+        </div>
+      </div>
+      <div class="talk-item">
+        <div class="talk-num">2</div>
+        <div class="talk-content">
+          <h4>You're already a multi-brand platform — your tech should match</h4>
+          <p>They're running Letterkenny + Shoresy + a video game + a whiskey brand + live events + planned streaming. That's not an e-commerce store — that's a commerce-powered entertainment ecosystem. Plus unlocks the API depth and checkout extensibility to stitch it all together.</p>
+        </div>
+      </div>
+      <div class="talk-item">
+        <div class="talk-num">3</div>
+        <div class="talk-content">
+          <h4>The ticket attribution leak</h4>
+          <p>They advertise events on their site but tickets go through Bandsintown, losing all conversion attribution. With Plus checkout extensibility, they could sell tickets natively. Jeff's OTT background means he immediately understands why owning that customer relationship matters.</p>
+        </div>
+      </div>
+      <div class="talk-item">
+        <div class="talk-num">4</div>
+        <div class="talk-content">
+          <h4>Audiences for content-to-commerce</h4>
+          <p>They're launching Vimeo streaming. Content viewers targeted via Shopify Audiences, converting to merch. Jeff's Bell Media background means he understands content-to-commerce funnels. 200M+ Shop app users is a warm-lead machine they're not using.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Discovery Questions -->
+  <div class="accordion">
+    <div class="accordion-header" onclick="toggleAccordion(this)">
+      <span><span class="check">&#10003;</span> Discovery Questions for Jeff</span>
+      <span class="toggle">&#9662;</span>
+    </div>
+    <div class="accordion-body">
+      <p>Jeff thinks in strategic growth, monetization, and partnerships — not checkout conversion percentages.</p>
+      <ul class="question-list">
+        <li>"Jeff, where do you see the biggest revenue unlock in the next 12 months — content, live events, merch, or licensing?"</li>
+        <li>"How are you thinking about customer data and attribution as you bring more of these verticals in-house?"</li>
+        <li>"When you look at the content streaming launch, what does success look like in terms of cross-selling back to merch and events?"</li>
+        <li>"What's the biggest platform limitation you're running into as you scale across these brands?"</li>
+        <li>"You've been at this about a year now — what's surprised you most about the commerce side coming from Bell Media?"</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Guardrails -->
+  <div class="accordion">
+    <div class="accordion-header" onclick="toggleAccordion(this)">
+      <span><span class="check">&#10003;</span> Guardrails — What NOT to Do</span>
+      <span class="toggle">&#9662;</span>
+    </div>
+    <div class="accordion-body">
+      <div class="warning-box">
+        <h4>Do NOT</h4>
+        <ul>
+          <li>Re-pitch Plus benefits like a first call — Jeff may have heard some of this from Raf</li>
+          <li>Lead with pricing or discounts — that's a Raf conversation, not a COO conversation</li>
+          <li>Reference the closed lost opp or that Raf said "not now"</li>
+          <li>Position this as "upgrading your plan" — position it as matching platform to strategy</li>
+          <li>Get transactional in a 30-minute exec conversation — there's no close on this call</li>
+        </ul>
+      </div>
+
+      <div class="sub-section">
+        <h4>Jeff &#8800; Raf</h4>
+        <p>Raf sees Plus through a <strong>cost/benefit lens</strong>: "Does the checkout uplift justify $2,500/mo at our current scale?" Jeff sees it through a <strong>strategic lens</strong>: "Does this platform unlock the next phase of our 360 entertainment strategy?" Speak Jeff's language.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Desired Outcomes -->
+  <div class="accordion">
+    <div class="accordion-header" onclick="toggleAccordion(this)">
+      <span><span class="check">&#10003;</span> Desired Outcomes</span>
+      <span class="toggle">&#9662;</span>
+    </div>
+    <div class="accordion-body">
+      <div class="outcome-grid">
+        <div class="outcome-card primary">
+          <div class="outcome-label">Best Case</div>
+          <div class="outcome-text">Jeff sees the strategic case and drives the timeline internally</div>
+          <div class="outcome-detail">Jeff says something like "This makes strategic sense — let me loop in Raf to look at timing and numbers." That gives you a COO-level champion pushing down, rather than trying to push up from the operational level.</div>
+        </div>
+        <div class="outcome-card fallback">
+          <div class="outcome-label">Fallback</div>
+          <div class="outcome-text">Anchor on the Toronto in-person meetup</div>
+          <div class="outcome-detail">If Jeff echoes Raf's "not yet," anchor on the Toronto summit (July 20-24). Kyle already has plans with Raf for beers. Offer a technical deep-dive on content/commerce integration before then.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- The Narrative -->
+  <div class="footer-cta">
+    <h2>The Narrative</h2>
+    <p style="max-width:680px;margin:0 auto;line-height:1.8;font-size:0.95rem;color:rgba(255,255,255,0.85);">
+      "This isn't a cold pitch to a random merchant. This is a media company building an entertainment empire — new shows on Paramount+ and Crave, live hockey events in 8 NHL arenas, a podcast studio acquisition, and investments in LA comedy. Their commerce infrastructure hasn't kept up with their ambitions. They're doing CRO analysis in Sidekick because they don't have the tools. Their live event tickets sell through Bandsintown with zero attribution. They're paying per-region fees for international Markets. They have nearly a million Instagram followers and no loyalty program. Plus isn't an upgrade — it's the infrastructure their business already needs."
+    </p>
+  </div>
+
+  <div class="page-footer">
+    Prepared by Kyle Dugandzic · Shopify NA SMB Crosssell · June 4, 2026<br>
+    Confidential — Internal use only
+  </div>
+
+</div>
+
+<script>
+function toggleAccordion(header) {
+  const body = header.nextElementSibling;
+  const isOpen = body.classList.contains('show');
+  if (isOpen) {
+    body.classList.remove('show');
+    header.classList.remove('active');
+  } else {
+    body.classList.add('show');
+    header.classList.add('active');
+  }
+}
+
+function expandAll() {
+  document.querySelectorAll('.accordion-body').forEach(b => b.classList.add('show'));
+  document.querySelectorAll('.accordion-header').forEach(h => h.classList.add('active'));
+}
+
+function collapseAll() {
+  document.querySelectorAll('.accordion-body').forEach(b => b.classList.remove('show'));
+  document.querySelectorAll('.accordion-header').forEach(h => h.classList.remove('active'));
+}
+</script>
+
+</body>
+</html>
